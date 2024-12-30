@@ -6,7 +6,7 @@ ASP.NET Core 8 開發實戰：新手上路篇
 回應的內容為純文字的 HTML 內容，即使 Header 中有 `Accept: application/json`，也不會回傳 JSON 格式的錯誤訊息，這樣的結果對於前端開發者來說，是不太友善的
 
 ```bash
-curl --location 'http://localhost:5010/WeatherForecast/exception' \
+curl --location 'http://localhost:xxxx/WeatherForecast/exception' \
 --header 'Accept: application/json'
 ```
 
@@ -30,3 +30,10 @@ curl --location 'http://localhost:5010/WeatherForecast/exception' \
     }
 }
 ```
+
+### **新增靜態檔案瀏覽功能**
+
+在 Program.cs 中定義 `app.UseStaticFiles()` 來啟用靜態檔案瀏覽功能，這樣就可以直接透過瀏覽器來存取靜態檔案
+
+靜態檔案放置於 wwwroot 資料夾中，透過瀏覽器存取 `http://localhost:xxxx/index.html` 即可存取到 wwwroot 資料夾中的 index.html 檔案
+
