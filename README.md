@@ -13,3 +13,20 @@ curl --location 'http://localhost:5010/WeatherForecast/exception' \
 錯誤內容
 ![alt text](./docs/images/ErrorMessage.png)
 
+
+### **啟用 Https Middleware**
+
+在 Program.cs 中定義 `app.UseHttpsRedirection()` 來啟用 Https Middleware，若在創建專案時未啟用除了新增 Middleware 外，還需要在 launchSettings.json 中設定 `applicationUrl` 來啟用 Https
+
+```json
+"https": {
+    "commandName": "Project",
+    "dotnetRunMessages": true,
+    "launchBrowser": true,
+    "launchUrl": "swagger",
+    "applicationUrl": "https://localhost:7268;http://localhost:5010",
+    "environmentVariables": {
+    "ASPNETCORE_ENVIRONMENT": "Development"
+    }
+}
+```
