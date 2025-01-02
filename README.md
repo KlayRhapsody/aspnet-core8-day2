@@ -37,3 +37,24 @@ curl --location 'http://localhost:xxxx/WeatherForecast/exception' \
 
 靜態檔案放置於 wwwroot 資料夾中，透過瀏覽器存取 `http://localhost:xxxx/index.html` 即可存取到 wwwroot 資料夾中的 index.html 檔案
 
+
+### **Razor 使用 Postman 請求 Post API 出現 400 錯誤**
+
+ASP.NET Core Razor Pages（或 MVC）開啟了 防跨網站要求偽造（CSRF） 的防護機制時，會要求：
+
+表單中（或請求中）帶有 __RequestVerificationToken。
+同時也要帶對應的 Cookie（通常是 .AspNetCore.AntiForgery.xxxxx 開頭）。
+
+當瀏覽器使用一般的 HTML 表單提交時，Razor 會自動幫你在 <form> 內插入這個 Token（隱藏欄位），並且瀏覽器會附帶相關 Cookie。因此在「一般使用者操作瀏覽器」的情況下，Token 與 Cookie 會自動配對，一切順利。
+但在 Postman 測試時，若你沒有人為地把 Token 與 Cookie 帶上，伺服器就會判斷「CSRF 驗證失敗」，直接回傳 HTTP 400
+
+```bash
+curl --location 'http://localhost:5023/Privacy' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--header 'Cookie: .AspNetCore.Antiforgery.iyZPTcKEqNY=THISISTOKEN' \
+--data-urlencode '__RequestVerificationToken=THISISTOKEN'
+```
+
+### **ASP.NET Core 的預設路由無大小寫區分**
+
+ASP.NET Core 的預設路由系統基於 Windows 檔案系統的大小寫不敏感性，因此路由也被設計為大小寫不敏感的。如果應用程式部署在大小寫敏感的檔案系統（例如 Linux 上的 ext4 文件系統）上，這個行為仍然是由框架本身的設定所控制，與檔案系統無關
