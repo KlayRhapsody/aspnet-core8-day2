@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc8", "Mvc8\Mvc8.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor8", "Razor8\Razor8.csproj", "{DE4D93B5-194E-40E0-AAA5-408B0D35610E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor8", "Blazor8\Blazor8.csproj", "{94A48A1A-9E15-40AF-BAF4-C82265CACFCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DE4D93B5-194E-40E0-AAA5-408B0D35610E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE4D93B5-194E-40E0-AAA5-408B0D35610E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE4D93B5-194E-40E0-AAA5-408B0D35610E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94A48A1A-9E15-40AF-BAF4-C82265CACFCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94A48A1A-9E15-40AF-BAF4-C82265CACFCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94A48A1A-9E15-40AF-BAF4-C82265CACFCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94A48A1A-9E15-40AF-BAF4-C82265CACFCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

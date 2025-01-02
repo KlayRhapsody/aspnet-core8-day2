@@ -1,0 +1,26 @@
+@* 這是一個關於 EditName 的子元件 UserProfile *@
+
+<h3>子元件</h3>
+<p>接收到的用戶名稱：@DisplayUserName</p>
+<button @onclick="ChangeUserName">子元件更改名稱</button>
+
+@code {
+    [Parameter]
+    public string UserName { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnUserNameChanged { get; set; }
+
+    private string DisplayUserName;
+
+    protected override void OnParametersSet()
+    {
+        DisplayUserName = $"Welcome, {UserName}";
+    }
+
+    private async Task ChangeUserName()
+    {
+        var newUserName = "Child Blazor8";
+        await OnUserNameChanged.InvokeAsync(newUserName);
+    }
+}

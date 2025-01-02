@@ -1,0 +1,30 @@
+﻿@* 這是一個關於 EditName 的父元件 *@
+
+@page "/editname"
+@rendermode InteractiveServer
+
+<PageTitle>Edit Name</PageTitle>
+
+<h3>更新用戶名稱</h3>
+
+<p>當前用戶名稱：@UserName</p>
+
+<button @onclick="UpdateUserName">更改名稱</button>
+
+<UserProfile UserName="@UserName" OnUserNameChanged="HandleUserNameChanged"/>
+
+@code {
+    private string UserName = "Blazor8";
+
+    private void UpdateUserName()
+    {
+        UserName = "Parent Blazor8";
+    }
+
+    private void HandleUserNameChanged(string newUserName)
+    {
+        UserName = newUserName;
+    }
+}
+
+

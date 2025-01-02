@@ -55,7 +55,7 @@ curl --location 'http://localhost:5023/Privacy' \
 --data-urlencode '__RequestVerificationToken=THISISTOKEN'
 ```
 
-### **Razor**
+### **Razor 相關規則**
 
 透過繼承 PageModel 來實現 Razor Page 的後端邏輯，並透過 Razor Page 的檔案結構來實現前端頁面的設計，Razor Page 的後端邏輯與前端頁面設計是放在同一個檔案中，例如 `Privacy.cshtml.cs` 與 `Privacy.cshtml`，檔名為路由的一部分，例如 `Privacy.cshtml` 對應的路由為 `/Privacy`，頁面內容則為 `Privacy.cshtml` 的內容
 
@@ -75,4 +75,22 @@ ASP.NET Core 的預設路由系統基於 Windows 檔案系統的大小寫不敏�
 | **使用場景**        | 內容為主的動態網頁                                    | 互動性強的前端應用或單頁應用                              |
 | **技術限制**        | 缺乏前端互動能力，需額外依賴 JS                       | WebAssembly 加載慢，伺服器模式依賴 SignalR                |
 
----
+
+### **Blazor 的模式**
+1. **Blazor Server**
+   - 應用程式邏輯執行在伺服器上，透過 SignalR 即時同步到客戶端。
+   - 適合需要即時更新、對 SEO 友好並且延遲要求不高的應用。
+
+2. **Blazor WebAssembly (WASM)**
+   - 應用程式邏輯執行在客戶端（瀏覽器端），以 WebAssembly 運行 .NET 程式。
+   - 適合對互動性能要求高、能減少伺服器依賴的應用。
+
+3. **Auto 模式**
+   - **自動選擇模式**：應用程式會根據執行環境或用戶端條件動態選擇 Blazor Server 或 Blazor WebAssembly 模式運行。
+
+
+### **Blazor Server 元件傳遞機制**
+1. **父元件向子元件傳遞參數**
+   - 在子元件中定義參數，並在父元件中使用子元件時，透過 `@` 符號來傳遞參數
+2. **子元件向父元件傳遞事件**
+   - 在子元件中定義事件，並在父元件中使用子元件時，透過 `EventCallback` 來傳遞事件
