@@ -55,6 +55,24 @@ curl --location 'http://localhost:5023/Privacy' \
 --data-urlencode '__RequestVerificationToken=THISISTOKEN'
 ```
 
+### **Razor**
+
+透過繼承 PageModel 來實現 Razor Page 的後端邏輯，並透過 Razor Page 的檔案結構來實現前端頁面的設計，Razor Page 的後端邏輯與前端頁面設計是放在同一個檔案中，例如 `Privacy.cshtml.cs` 與 `Privacy.cshtml`，檔名為路由的一部分，例如 `Privacy.cshtml` 對應的路由為 `/Privacy`，頁面內容則為 `Privacy.cshtml` 的內容
+
 ### **ASP.NET Core 的預設路由無大小寫區分**
 
 ASP.NET Core 的預設路由系統基於 Windows 檔案系統的大小寫不敏感性，因此路由也被設計為大小寫不敏感的。如果應用程式部署在大小寫敏感的檔案系統（例如 Linux 上的 ext4 文件系統）上，這個行為仍然是由框架本身的設定所控制，與檔案系統無關
+
+### **Razor vs. Blazor 的選擇建議**
+
+| **比較項目**       | **Razor**                                            | **Blazor**                                                 |
+|---------------------|-----------------------------------------------------|-----------------------------------------------------------|
+| **運行模式**        | 伺服器端渲染（SSR）                                   | 客戶端（WebAssembly）或伺服器模式                         |
+| **互動性**          | 需要結合 JavaScript                                   | 使用 C# 實現互動性，適合 SPA 開發                         |
+| **開發者友好性**    | 更適合熟悉 HTML/C# 的傳統開發者                       | 適合 .NET 全棧開發者                                      |
+| **SEO 支援**        | 強，伺服器端生成完整 HTML                              | WebAssembly 的 SEO 支援較弱，Blazor Server 支援較強       |
+| **性能**           | 依賴伺服器資源，適合大規模請求                        | 初次加載慢（WebAssembly），高互動性應用適合               |
+| **使用場景**        | 內容為主的動態網頁                                    | 互動性強的前端應用或單頁應用                              |
+| **技術限制**        | 缺乏前端互動能力，需額外依賴 JS                       | WebAssembly 加載慢，伺服器模式依賴 SignalR                |
+
+---
