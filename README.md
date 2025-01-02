@@ -31,6 +31,7 @@ curl --location 'http://localhost:xxxx/WeatherForecast/exception' \
 }
 ```
 
+
 ### **新增靜態檔案瀏覽功能**
 
 在 Program.cs 中定義 `app.UseStaticFiles()` 來啟用靜態檔案瀏覽功能，這樣就可以直接透過瀏覽器來存取靜態檔案
@@ -55,13 +56,16 @@ curl --location 'http://localhost:5023/Privacy' \
 --data-urlencode '__RequestVerificationToken=THISISTOKEN'
 ```
 
+
 ### **Razor 相關規則**
 
 透過繼承 PageModel 來實現 Razor Page 的後端邏輯，並透過 Razor Page 的檔案結構來實現前端頁面的設計，Razor Page 的後端邏輯與前端頁面設計是放在同一個檔案中，例如 `Privacy.cshtml.cs` 與 `Privacy.cshtml`，檔名為路由的一部分，例如 `Privacy.cshtml` 對應的路由為 `/Privacy`，頁面內容則為 `Privacy.cshtml` 的內容
 
+
 ### **ASP.NET Core 的預設路由無大小寫區分**
 
 ASP.NET Core 的預設路由系統基於 Windows 檔案系統的大小寫不敏感性，因此路由也被設計為大小寫不敏感的。如果應用程式部署在大小寫敏感的檔案系統（例如 Linux 上的 ext4 文件系統）上，這個行為仍然是由框架本身的設定所控制，與檔案系統無關
+
 
 ### **Razor vs. Blazor 的選擇建議**
 
@@ -87,6 +91,14 @@ ASP.NET Core 的預設路由系統基於 Windows 檔案系統的大小寫不敏�
 
 3. **Auto 模式**
    - **自動選擇模式**：應用程式會根據執行環境或用戶端條件動態選擇 Blazor Server 或 Blazor WebAssembly 模式運行。
+
+```csharp
+// Auto          - 下載 WebAssembly 資產時使用伺服器，然後使用 WebAssembly
+// None          - 沒有互動功能 (只有靜態伺服器轉譯)
+// Server        - 在伺服器上執行
+// WebAssembly   - 使用 WebAssembly 在瀏覽器中執行
+dotnet new blazor -n Blazor8 --interactivity Server
+```
 
 
 ### **Blazor Server 元件傳遞機制**
