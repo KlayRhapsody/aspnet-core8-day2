@@ -211,3 +211,45 @@ SQL Server 和 MySQL 都有一些系統資料庫，但它們在功能和設計�
 | **臨時數據與結果**       | `tempdb`                              | 使用 `CREATE TEMPORARY TABLE`        |
 | **元數據和結構查詢**     | 使用 `sys` 視圖                      | `information_schema` 和 `performance_schema` |
 | **性能監控與診斷**       | 動態管理視圖（DMVs）、XEvents          | `performance_schema` 和 `sys`       |
+
+
+### **新增空的 Web 專案**
+
+空專案是一個最簡單的 ASP.NET Core 專案，不包含任何預設的 Middleware 或服務
+
+```bash
+dotnet new web -n EmptyWeb8 -f net8.0
+```
+
+### **Middleware 的執行順序**
+
+當收到 HTTP Request 時，請求會由 Middleware 逐步上到下執行，因此 Middleware 的註冊順序會影響執行順序
+   - 當 Middleware 執行後可透過 `next()` 方法將請求傳遞到下一個 Middleware
+   - 當 Terminal Middleware 執行後，請求將不會再傳遞到下一個 Middleware，而是由下到上逐步返回並執行 `next()` 下面的邏輯
+   - 因此第一個 Middleware 會是最後一個執行的 Middleware
+   - 要透過 Middleware 執行 Try-Catch 錯誤處理，需將 Try-Catch 放在第一個註冊的 Middleware 中，確保所有邏輯都能被 Try-Catch 包裹
+   - 可以透過靜態類別擴充方法的方式來定義 Middleware，這樣可以讓 Middleware 的註冊更加簡潔
+   - Fuction 名稱可以使用中文，只要檔案編碼為 UTF-8 即可
+   - Middleware 無法取得終端架構的資訊，像是路由資訊，因此無法取得 Controller 與 Action 的資訊
+
+
+### **Middleware 的使用方式**
+
+1. **使用 app.Run() 來自定義 Terminal Middleware**
+```csharp
+app.Run(async context =>
+{
+   await context.Response.WriteAsync("Hello, World!");
+});
+```
+2. **使用 app.Use() 來自定義 Middleware**
+```csharp
+app.Use(async (context, next) =>
+{
+    await context.Response.WriteAsync("1");
+
+    await next();
+
+    await context.Response.WriteAsync("2");
+});
+```
