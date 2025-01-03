@@ -133,3 +133,81 @@ dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 // -outDir 表示 輸出目錄
 dotnet aspnet-codegenerator minimalapi -e StudentEndpoints -o -m MiniApi8.Models.Student -outDir ./Endpoints
 ```
+
+
+### **在 Minimal API 中使用 Entity Framework**
+
+1. **安裝並啟動 MS SQL Server**
+```bash
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=xxxxxx" -p 1433:1433 --name sqlserver -d mcr.microsoft.com/mssql/server:2022-latest
+```
+2. **新增資料庫**
+   - [ContosoUniversity](https://gist.github.com/doggy8088/2a2f7075d49b3814d19513426ede3549)
+3. **使用 EF Core Power Tools 反向工程**
+- 安裝 Sql Server package
+```xml
+<ItemGroup>
+  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+</ItemGroup>
+```
+- 註冊 DbContext 服務
+```csharp
+builder.Services.AddDbContext<ContosoUniversityContext>(
+   options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+```
+- 設定 ConnectionStrings (連線字串需自行設定帳密)
+```json
+{
+   "ConnectionStrings": {
+      "DefaultConnection": "data source=localhost;initial catalog=ContosoUniversity;user id=sa;password=xxxxxx;encrypt=True;trust server certificate=True;command timeout=300"
+   }
+}
+```
+- 設定 `efcpt-config.json` 避免產生額外 View、Store Procedure Code 以及覆蓋現有設定檔
+```json
+{
+   "refresh-object-lists": false,
+   "views": [],
+   "store-procedures": [],
+}
+```
+- 安裝 EF Core Power Tools package
+```xml
+<ItemGroup>
+   <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
+   <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
+</ItemGroup>
+```
+- 產生 CourseEndpoints
+```bash
+dotnet aspnet-codegenerator minimalapi -dc MiniApi8.Models.ContosoUniversityContext -e CourseEndpoints -o -m MiniApi8.Models.Course -outDir Endpoints
+```
+
+
+
+
+
+### **MS SQL 預設表格**
+
+| 資料庫名稱 | 主要用途                                      | 特點                                                |
+|------------|----------------------------------------------|---------------------------------------------------|
+| **master** | 存儲伺服器層級的配置和元數據                  | SQL Server 的核心資料庫，對伺服器正常運行至關重要  |
+| **model**  | 為新建的資料庫提供模板                       | 可自定義來影響所有新資料庫的默認設置              |
+| **msdb**   | 支持代理服務、自動化和備份還原的元數據存儲   | 包含作業、計劃任務和歷史記錄                      |
+| **tempdb** | 用於臨時數據和中間結果                       | 每次伺服器啟動後會重新創建                        |
+
+SQL Server 和 MySQL 都有一些系統資料庫，但它們在功能和設計機制上有所不同。以下是對比 Microsoft SQL Server 的四個預設資料庫（`master`、`model`、`msdb`、`tempdb`）與 MySQL 系統資料庫的解析：
+
+
+### **SQL Server 和 MySQL 機制的比較**
+
+| 功能/用途              | **SQL Server 預設資料庫**               | **MySQL 系統資料庫**                   |
+|-----------------------|---------------------------------------|---------------------------------------|
+| **伺服器元數據管理**     | `master`                              | `mysql`                              |
+| **新建資料庫模板**       | `model`                               | 無直接對應，可用全域參數模擬          |
+| **備份與作業管理**       | `msdb`                                | 無直接對應，使用外部工具（如 cron）   |
+| **臨時數據與結果**       | `tempdb`                              | 使用 `CREATE TEMPORARY TABLE`        |
+| **元數據和結構查詢**     | 使用 `sys` 視圖                      | `information_schema` 和 `performance_schema` |
+| **性能監控與診斷**       | 動態管理視圖（DMVs）、XEvents          | `performance_schema` 和 `sys`       |
