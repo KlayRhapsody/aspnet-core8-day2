@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor8", "Blazor8\Blazor8.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniApi8", "MiniApi8\MiniApi8.csproj", "{8111DD71-64E5-468A-892B-228DACD6C7AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyWeb8", "EmptyWeb8\EmptyWeb8.csproj", "{12A7FAF5-CE33-450A-A6F8-2F05C8189849}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{8111DD71-64E5-468A-892B-228DACD6C7AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8111DD71-64E5-468A-892B-228DACD6C7AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8111DD71-64E5-468A-892B-228DACD6C7AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12A7FAF5-CE33-450A-A6F8-2F05C8189849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12A7FAF5-CE33-450A-A6F8-2F05C8189849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12A7FAF5-CE33-450A-A6F8-2F05C8189849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12A7FAF5-CE33-450A-A6F8-2F05C8189849}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
