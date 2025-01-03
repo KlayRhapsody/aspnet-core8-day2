@@ -106,3 +106,30 @@ dotnet new blazor -n Blazor8 --interactivity Server
    - 在子元件中定義參數，並在父元件中使用子元件時，透過 `@` 符號來傳遞參數
 2. **子元件向父元件傳遞事件**
    - 在子元件中定義事件，並在父元件中使用子元件時，透過 `EventCallback` 來傳遞事件
+
+
+### **新增 Minimal API 專案**
+
+```bash
+// -controllers, --use-controllers
+// -minimal, --use-minimal-apis
+// 預設不指定參數則創建 Minimal API
+dotnet new webapi -n MiniApi8 --use-minimal-apis -f net8.0
+```
+
+### **在 Minimal API 中創建 Endpoints**
+
+1. **創建資料模型**
+   - 在 Models 資料夾中新增 Student.cs 檔案，並定義 Student 資料模型和命名空間
+2. **安裝 Microsoft.VisualStudio.Web.CodeGeneration.Design package**
+```bash
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+```
+3. **Scaffold Endpoints**
+```bash
+// -e 表示 Endpoints 名稱
+// -o 表示 允許覆蓋現有文件
+// -m 表示 指定模型
+// -outDir 表示 輸出目錄
+dotnet aspnet-codegenerator minimalapi -e StudentEndpoints -o -m MiniApi8.Models.Student -outDir ./Endpoints
+```
