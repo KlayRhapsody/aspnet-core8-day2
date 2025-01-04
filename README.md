@@ -253,3 +253,54 @@ app.Use(async (context, next) =>
     await context.Response.WriteAsync("2");
 });
 ```
+
+### **Middleware Hot Reload 執行流程範例**
+
+1. 使用者發送一個帶有 `?hotreload` 的 HTTP 請求，例如：
+   ```
+   https://example.com/page?hotreload
+   ```
+2. 伺服器收到請求，進入這段程式碼。
+3. `context.Request.Query.ContainsKey("hotreload")` 返回 `true`。
+4. 伺服器在回應中插入：
+   ```html
+   <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+   ```
+5. 瀏覽器收到回應，執行插入的 JavaScript 腳本，啟用 Hot Reload 功能。
+
+
+### **Middleware 的擺放順序**
+
+當要使用 Middleware 時，應該要注意 Middleware 的擺放順序，但此順序並無標準答案，很多時候文件也不一定有寫說要放在哪
+   - 若未自行指定 `app.UseRouting()` 則 `app.UseRouting()` 會在 Middleware 的第一個來執行
+   - Map 開頭的 Middleware 無順序性
+   - 以下為 MVC 的 Middleware 順序
+```csharp
+app.UseExceptionHandler("/Home/Error");
+app.UseHsts();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+app.MapControllerRoute();
+```
+
+### **`app.UseRouting()`**
+
+Routing 會去處理網址上的路由結構，找到這個網址要去對到誰去執行
+- URL Read/Write 肯定要放在 Routing 後面
+- StaticFile 跟 Routing 並沒有相依性
+- 將傳入的 HTTP 請求與路由表進行匹配，匹配路由
+
+
+### **Response Security Http Header Middleware 加在哪**
+
+`MapControllerRoute` 前較合適 (沒標準答案)
+
+延伸問題：放置 `next()` 上面還是下面？ 
+
+上面，Header 要先送才能送 Body
+
+- Http response 有 output buffer，若後續的 Middleware 輸出的 response body 超過 buffer 就會先將內容回傳出去，而 Header 就來不及處理
+- 在處理 HTTP 回應時，標頭必須在主體發送之前發出。因為一旦主體開始發送，ASP.NET Core 就會鎖定（flush）標頭，這時你就不能再更改標頭了。如果標頭處理放在 `next()` 之後，但 `next()` 可能會在其後的中介軟體中導致主體開始發送（比如當內容超過 buffer 大小時），這樣就來不及修改或添加標頭了
+

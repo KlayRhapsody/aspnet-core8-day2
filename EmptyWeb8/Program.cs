@@ -3,6 +3,22 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 app.UseCustomExceptionHandling();
+app.UseRequestCulture();
+app.UseLogRequestResponse();
+app.UseCustomCompression();
+
+app.Use(async (context, next) =>
+{
+    await next();
+
+    if (app.Environment.IsDevelopment() &&
+        context.Request.Query.ContainsKey("hotreload"))
+    {
+        await context.Response.WriteAsync("""
+        <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+        """);
+    }
+});
 
 app.Use(async (context, next) =>
 {
