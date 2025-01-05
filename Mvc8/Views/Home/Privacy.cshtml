@@ -1,6 +1,26 @@
-﻿@{
+﻿@inject IRegristrationService regristrationService
+@inject IConfiguration configuration
+
+@{
     ViewData["Title"] = "Privacy Policy";
+    var privacyReg = regristrationService.Register("Privacy");
+    var logLevelDefault = configuration.GetValue<string>("Logging:LogLevel:Default");
 }
 <h1>@ViewData["Title"]</h1>
+<h1>@privacyReg</h1>
+<h1>@logLevelDefault</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
+
+<p>@ViewBag.DefaultMessage</p>
+<p>@ViewBag.ExternalMessage</p>
+
+@foreach (var msg in ViewBag.ServicesMessages)
+{
+    <p>@msg</p>
+}
+
+<ul>
+    <li>Title: @ViewBag.SampleWebSettings.Title</li>
+    <li>Updates: @ViewBag.SampleWebSettings.Updates</li>
+</ul>

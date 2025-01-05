@@ -304,3 +304,25 @@ Routing 會去處理網址上的路由結構，找到這個網址要去對到誰
 - Http response 有 output buffer，若後續的 Middleware 輸出的 response body 超過 buffer 就會先將內容回傳出去，而 Header 就來不及處理
 - 在處理 HTTP 回應時，標頭必須在主體發送之前發出。因為一旦主體開始發送，ASP.NET Core 就會鎖定（flush）標頭，這時你就不能再更改標頭了。如果標頭處理放在 `next()` 之後，但 `next()` 可能會在其後的中介軟體中導致主體開始發送（比如當內容超過 buffer 大小時），這樣就來不及修改或添加標頭了
 
+
+### **使用 DI 注意事項**
+
+- 實作 IDisposable 應該注意 DI 的用法
+- 透過 ASP.NET Core 的 DI 容器會幫你管理物件生命週期
+  ```csharp
+  services.AddScoped<Service1>();
+  services.AddSingleton<Service2>();
+  services.AddSingleton<ISomeService>(sp => 
+  { 
+      return new SomeServiceImplementation(); 
+  }); // 工廠方法
+  ```
+- 如果是自己 new 出物件的，就不會自動回收物件
+  ```csharp
+  services.AddSingleton<Service3>(new Service3());
+  services.AddSingleton(new Service3());
+  ```
+- 請確保 Singleton 服務必須擁有執行緒安全 (Thread Safety)
+- 在 Middleware 中避免使用建構式注入來存取 Scoped 服務
+- 建議實作注入在 Invoke 或 InvokeAsync 方法中
+
